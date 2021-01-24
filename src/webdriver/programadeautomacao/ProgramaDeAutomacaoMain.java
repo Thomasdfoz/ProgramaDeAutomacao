@@ -22,6 +22,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -32,20 +34,22 @@ import javax.swing.JTextPane;
 public class ProgramaDeAutomacaoMain extends javax.swing.JFrame {
 
     private int tempoOcioso;
-    private boolean desbloquiar;
+    public boolean desbloquiar;
     private String url = "https://170.84.17.234:8443/progatWeb/sistema/comercial/ven/pedido/pedido.jsf";
     private String username = new String("thiago@barros.com.br");
     private String password = new String("123456");
-    private int repete;
-    private Thread thread;
+    public int repete;
+    private ThreadClass thread;
+    private Thread threadClass;
     private SistemaBarros barros;
+    static ProgramaDeAutomacaoMain classMain;
+    public JTextField campoF;
 
     /**
      * Creates new form ProgramaDeAutomacaoMain
      */
     public ProgramaDeAutomacaoMain() {
         initComponents();
-       
 
     }
 
@@ -69,6 +73,7 @@ public class ProgramaDeAutomacaoMain extends javax.swing.JFrame {
         RepSpinner = new javax.swing.JSpinner();
         TempSpinner = new javax.swing.JSpinner();
         StartBtn = new javax.swing.JButton();
+        StopBtn = new javax.swing.JButton();
         StatusPanel = new javax.swing.JScrollPane();
         TextPanel = new javax.swing.JTextArea();
         jLabel4 = new javax.swing.JLabel();
@@ -81,6 +86,7 @@ public class ProgramaDeAutomacaoMain extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Programa de automação");
+        setAlwaysOnTop(true);
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(143, 190, 190));
@@ -120,7 +126,8 @@ public class ProgramaDeAutomacaoMain extends javax.swing.JFrame {
         RepSpinner.setBorder(null);
 
         TempSpinner.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        TempSpinner.setModel(new javax.swing.SpinnerNumberModel(15, 15, 60, 1));
+        TempSpinner.setModel(new javax.swing.SpinnerNumberModel(5, 5, 60, 1));
+        TempSpinner.setToolTipText("");
         TempSpinner.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         StartBtn.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
@@ -131,22 +138,30 @@ public class ProgramaDeAutomacaoMain extends javax.swing.JFrame {
             }
         });
 
+        StopBtn.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        StopBtn.setText("Stop");
+        StopBtn.setEnabled(false);
+        StopBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                StopBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(CampoField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(CampoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(RepeticoesLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(RepSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(CampoField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(CampoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                     .addComponent(DesVenCheck, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(StopBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(RepSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(RepeticoesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(53, 53, 53)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(StartBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -164,13 +179,14 @@ public class ProgramaDeAutomacaoMain extends javax.swing.JFrame {
                     .addComponent(TempoOciosoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
-                    .addComponent(RepSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                    .addComponent(TempSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                    .addComponent(CampoField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(RepSpinner)
+                    .addComponent(TempSpinner)
+                    .addComponent(CampoField, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(DesVenCheck)
-                    .addComponent(StartBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(StartBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(StopBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -207,8 +223,8 @@ public class ProgramaDeAutomacaoMain extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(StatusPanel))
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
@@ -225,12 +241,13 @@ public class ProgramaDeAutomacaoMain extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(StatusPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                .addComponent(StatusPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(RepInfLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(RepInfLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(RepInfLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(RepInfLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
         RepInfLabel.getAccessibleContext().setAccessibleName("RepeticoesInferiorLabel");
@@ -246,61 +263,42 @@ public class ProgramaDeAutomacaoMain extends javax.swing.JFrame {
 
     public void AddText(String txt) {
         TextPanel.append(txt);
+
+    }
+
+    public void AtualizarLabel(String txt) {
+        RepInfLabel1.setText(txt);
+
     }
     private void StartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartBtnActionPerformed
         // TODO add your handling code here:
         tempoOcioso = (int) TempSpinner.getValue();
         repete = (int) RepSpinner.getValue();
+        campoF = CampoField;
         //AtivaDesativaComponentes(false);
         TextPanel.setText("");
         System.setProperty("webdriver.chrome.driver", "D:\\Usuarios\\Thomas\\Documents\\Libs\\chromedriver_win32\\chromedriver.exe");
-        try {
-            RunSistema();
-        } catch (AWTException ex) {
-            Logger.getLogger(ProgramaDeAutomacaoMain.class.getName()).log(Level.SEVERE, null, ex);
-        }
         RepInfLabel.setText(Integer.toString(repete));
+        thread = new ThreadClass(tempoOcioso, url, username, password, classMain);
+        threadClass = new Thread(thread);
+        threadClass.start();
+        AtualizarLabel("0");
+        AtivaDesativaComponentes(false);
+        
+        
+
     }//GEN-LAST:event_StartBtnActionPerformed
 
-    public void RunSistema() throws AWTException {
-        barros = new SistemaBarros(tempoOcioso, url, username, password);
-        barros.LogarNoSistema();
+    private void StopBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopBtnActionPerformed
+        // TODO add your handling code here:
+        StopThread();
         
-        if (CampoField.getText() != "") {
-            barros.ProcurarPorData(CampoField.getText());
-        }
-        if (desbloquiar) {
-            barros.AbrirDesbloquiarVenda();
-            barros.DesbloquiarVendas();
-            AddText(barros.msg);
-        }
-        for (int i = 1; i <= repete; i++) {
-            try {
-                barros.AbrirFecharVenda();
-                if (barros.EstaBloquiado()) {
-                    barros.DesbloquiarVendas();
-                    continue;
-                }
-                barros.FinalizarFechamento();
-                AddText(i + " " + barros.cliente + " " + barros.condicao + "\n");
-                RepInfLabel1.setText(Integer.toString(i));
-            } catch (org.openqa.selenium.NoSuchElementException ex) {
-                AddText("Todas as vendas Fechadas!! \n");
-                break;
-            }catch(Exception ex){
-                AddText("erro:\n");
-                break;
-            }
-        }
-        barros.Sair();
-    }
+    }//GEN-LAST:event_StopBtnActionPerformed
 
-    public void ActionPerformed(java.awt.event.ActionEvent e) {
-        if (!thread.isAlive()) {
-            System.out.println("exit");
-        }
+    public void StopThread(){
+        AtivaDesativaComponentes(true);
+        threadClass.stop();
     }
-
     public void AtivaDesativaComponentes(boolean value) {
         TempSpinner.setEnabled(value);
         TempoOciosoLabel.setEnabled(value);
@@ -309,6 +307,8 @@ public class ProgramaDeAutomacaoMain extends javax.swing.JFrame {
         CampoField.setEnabled(value);
         CampoLabel.setEnabled(value);
         DesVenCheck.setEnabled(value);
+        StartBtn.setEnabled(value);
+        StopBtn.setEnabled(!value);
 
     }
 
@@ -342,7 +342,10 @@ public class ProgramaDeAutomacaoMain extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ProgramaDeAutomacaoMain().setVisible(true);
+                ProgramaDeAutomacaoMain massa = new ProgramaDeAutomacaoMain();
+                massa.setVisible(true);
+
+                classMain = massa;
 
             }
         });
@@ -361,6 +364,7 @@ public class ProgramaDeAutomacaoMain extends javax.swing.JFrame {
     private javax.swing.JLabel RepeticoesLabel;
     private javax.swing.JButton StartBtn;
     private javax.swing.JScrollPane StatusPanel;
+    private javax.swing.JButton StopBtn;
     private javax.swing.JSpinner TempSpinner;
     private javax.swing.JLabel TempoOciosoLabel;
     private javax.swing.JTextArea TextPanel;

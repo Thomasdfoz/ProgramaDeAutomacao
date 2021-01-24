@@ -10,13 +10,14 @@ import java.awt.AWTException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import webdriver.programadeautomacao.ProgramaDeAutomacaoMain;
 
 /**
  *
  * @author Thomas
  */
-public class SistemaBarros implements Runnable {
-
+public class SistemaBarros {
+    
     public int tempoOcioso;
     private String url; //= "https://170.84.17.234:8443/progatWeb/sistema/comercial/ven/pedido/pedido.jsf";
     private String username; //= new String("thiago@barros.com.br");
@@ -31,6 +32,7 @@ public class SistemaBarros implements Runnable {
     public String msg = new String();
 
     public SistemaBarros(int tempoOcioso, String url, String username, String password) {
+        
         this.tempoOcioso = tempoOcioso;
         this.url = url;
         this.username = username;
@@ -39,8 +41,10 @@ public class SistemaBarros implements Runnable {
 
     public void LogarNoSistema() {
         selen.OpenPage(url);
-        selen.Click("/html/body/div/div[2]/button[3]");
-        selen.Click("/html/body/div/div[3]/p[2]/a");
+        if (selen.isDisplayed("/html/body/div/div[2]/button[3]")) {
+            selen.Click("/html/body/div/div[2]/button[3]");
+            selen.Click("/html/body/div/div[3]/p[2]/a");
+        }
         selen.SendKeys("/html/body/div[1]/div/div[2]/form/div[2]/input", username);
         selen.SendKeys("/html/body/div[1]/div/div[2]/form/div[4]/input", password);
         selen.Click("/html/body/div[1]/div/div[2]/form/div[7]/button");
@@ -137,10 +141,4 @@ public class SistemaBarros implements Runnable {
         selen.GetRobot(KeyEvent.VK_ENTER);
         TimeSleep.Sleep(1);
     }
-
-    @Override
-    public void run() {
-
-    }
-
 }
