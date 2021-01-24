@@ -5,17 +5,48 @@
  */
 package webdriver.programadeautomacao;
 
+import com.sun.glass.events.KeyEvent;
+import java.awt.AWTException;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.Action;
+import java.awt.Robot;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Thomas
  */
+import javax.swing.JTextPane;
+
 public class ProgramaDeAutomacaoMain extends javax.swing.JFrame {
+
+    private int tempoOcioso;
+    private boolean desbloquiar;
+    private String url = "https://170.84.17.234:8443/progatWeb/sistema/comercial/ven/pedido/pedido.jsf";
+    private String username = new String("thiago@barros.com.br");
+    private String password = new String("123456");
+    private int repete;
+    private Thread thread;
+    private SistemaBarros barros;
 
     /**
      * Creates new form ProgramaDeAutomacaoMain
      */
     public ProgramaDeAutomacaoMain() {
         initComponents();
+       
+
     }
 
     /**
@@ -27,21 +58,259 @@ public class ProgramaDeAutomacaoMain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jPanel1 = new javax.swing.JPanel();
+        TempoOciosoLabel = new javax.swing.JLabel();
+        CampoLabel = new javax.swing.JLabel();
+        CampoField = new javax.swing.JTextField();
+        RepeticoesLabel = new javax.swing.JLabel();
+        DesVenCheck = new javax.swing.JCheckBox();
+        RepSpinner = new javax.swing.JSpinner();
+        TempSpinner = new javax.swing.JSpinner();
+        StartBtn = new javax.swing.JButton();
+        StatusPanel = new javax.swing.JScrollPane();
+        TextPanel = new javax.swing.JTextArea();
+        jLabel4 = new javax.swing.JLabel();
+        RepInfLabel = new javax.swing.JLabel();
+        RepInfLabel1 = new javax.swing.JLabel();
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Programa de automação");
+        setResizable(false);
+
+        jPanel1.setBackground(new java.awt.Color(143, 190, 190));
+        jPanel1.setForeground(new java.awt.Color(204, 204, 0));
+
+        TempoOciosoLabel.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        TempoOciosoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        TempoOciosoLabel.setText("Tempo ocioso");
+
+        CampoLabel.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        CampoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        CampoLabel.setText("Campo de busca");
+
+        CampoField.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        CampoField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        CampoField.setToolTipText("");
+        CampoField.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        CampoField.setPreferredSize(new java.awt.Dimension(70, 23));
+
+        RepeticoesLabel.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        RepeticoesLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        RepeticoesLabel.setText("Repetições");
+
+        DesVenCheck.setBackground(new java.awt.Color(143, 190, 190));
+        DesVenCheck.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        DesVenCheck.setText("Desbloquiar vendas?");
+        DesVenCheck.setBorder(null);
+        DesVenCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DesVenCheckActionPerformed(evt);
+            }
+        });
+
+        RepSpinner.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        RepSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 1000, 1));
+        RepSpinner.setToolTipText("");
+        RepSpinner.setBorder(null);
+
+        TempSpinner.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        TempSpinner.setModel(new javax.swing.SpinnerNumberModel(15, 15, 60, 1));
+        TempSpinner.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+
+        StartBtn.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        StartBtn.setText("Start");
+        StartBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                StartBtnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(CampoField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(CampoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(RepeticoesLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(RepSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(DesVenCheck, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(53, 53, 53)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(StartBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TempoOciosoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TempSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(CampoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(RepeticoesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TempoOciosoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
+                    .addComponent(RepSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(TempSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(CampoField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(DesVenCheck)
+                    .addComponent(StartBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        CampoLabel.getAccessibleContext().setAccessibleName("DataLabel");
+        CampoField.getAccessibleContext().setAccessibleName("DataInput");
+        RepeticoesLabel.getAccessibleContext().setAccessibleName("RepeticoesInput");
+        TempSpinner.getAccessibleContext().setAccessibleName("");
+
+        StatusPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        StatusPanel.setToolTipText("");
+
+        TextPanel.setEditable(false);
+        TextPanel.setColumns(20);
+        TextPanel.setLineWrap(true);
+        TextPanel.setRows(5);
+        TextPanel.setWrapStyleWord(true);
+        StatusPanel.setViewportView(TextPanel);
+        TextPanel.getAccessibleContext().setAccessibleParent(this);
+
+        jLabel4.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jLabel4.setText("Caixas fechado de ");
+
+        RepInfLabel.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        RepInfLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+
+        RepInfLabel1.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        RepInfLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(StatusPanel))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(RepInfLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(RepInfLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(StatusPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(RepInfLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(RepInfLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
+
+        RepInfLabel.getAccessibleContext().setAccessibleName("RepeticoesInferiorLabel");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void DesVenCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DesVenCheckActionPerformed
+        // TODO add your handling code here:
+        //teste para o painel status
+        desbloquiar = DesVenCheck.isSelected();
+    }//GEN-LAST:event_DesVenCheckActionPerformed
+
+    public void AddText(String txt) {
+        TextPanel.append(txt);
+    }
+    private void StartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartBtnActionPerformed
+        // TODO add your handling code here:
+        tempoOcioso = (int) TempSpinner.getValue();
+        repete = (int) RepSpinner.getValue();
+        //AtivaDesativaComponentes(false);
+        TextPanel.setText("");
+        System.setProperty("webdriver.chrome.driver", "D:\\Usuarios\\Thomas\\Documents\\Libs\\chromedriver_win32\\chromedriver.exe");
+        try {
+            RunSistema();
+        } catch (AWTException ex) {
+            Logger.getLogger(ProgramaDeAutomacaoMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        RepInfLabel.setText(Integer.toString(repete));
+    }//GEN-LAST:event_StartBtnActionPerformed
+
+    public void RunSistema() throws AWTException {
+        barros = new SistemaBarros(tempoOcioso, url, username, password);
+        barros.LogarNoSistema();
+        
+        if (CampoField.getText() != "") {
+            barros.ProcurarPorData(CampoField.getText());
+        }
+        if (desbloquiar) {
+            barros.AbrirDesbloquiarVenda();
+            barros.DesbloquiarVendas();
+            AddText(barros.msg);
+        }
+        for (int i = 1; i <= repete; i++) {
+            try {
+                barros.AbrirFecharVenda();
+                if (barros.EstaBloquiado()) {
+                    barros.DesbloquiarVendas();
+                    continue;
+                }
+                barros.FinalizarFechamento();
+                AddText(i + " " + barros.cliente + " " + barros.condicao + "\n");
+                RepInfLabel1.setText(Integer.toString(i));
+            } catch (org.openqa.selenium.NoSuchElementException ex) {
+                AddText("Todas as vendas Fechadas!! \n");
+                break;
+            }catch(Exception ex){
+                AddText("erro:\n");
+                break;
+            }
+        }
+        barros.Sair();
+    }
+
+    public void ActionPerformed(java.awt.event.ActionEvent e) {
+        if (!thread.isAlive()) {
+            System.out.println("exit");
+        }
+    }
+
+    public void AtivaDesativaComponentes(boolean value) {
+        TempSpinner.setEnabled(value);
+        TempoOciosoLabel.setEnabled(value);
+        RepSpinner.setEnabled(value);
+        RepeticoesLabel.setEnabled(value);
+        CampoField.setEnabled(value);
+        CampoLabel.setEnabled(value);
+        DesVenCheck.setEnabled(value);
+
+    }
 
     /**
      * @param args the command line arguments
@@ -74,10 +343,31 @@ public class ProgramaDeAutomacaoMain extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ProgramaDeAutomacaoMain().setVisible(true);
+
             }
         });
     }
 
+    /**
+     *
+     */
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField CampoField;
+    private javax.swing.JLabel CampoLabel;
+    private javax.swing.JCheckBox DesVenCheck;
+    private javax.swing.JLabel RepInfLabel;
+    private javax.swing.JLabel RepInfLabel1;
+    private javax.swing.JSpinner RepSpinner;
+    private javax.swing.JLabel RepeticoesLabel;
+    private javax.swing.JButton StartBtn;
+    private javax.swing.JScrollPane StatusPanel;
+    private javax.swing.JSpinner TempSpinner;
+    private javax.swing.JLabel TempoOciosoLabel;
+    private javax.swing.JTextArea TextPanel;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
+
 }
