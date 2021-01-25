@@ -35,6 +35,9 @@ public class Selenium {
     public void Sair(){
         driver.quit();
     }
+    public void Clear(String xpath){
+        driver.findElement(By.xpath(xpath)).clear();
+    }
     public void GetRobot(int key) throws AWTException {
         robot = new Robot();
         robot.keyPress(key);

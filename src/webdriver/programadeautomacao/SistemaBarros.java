@@ -49,7 +49,7 @@ public class SistemaBarros {
         selen.SendKeys("/html/body/div[1]/div/div[2]/form/div[4]/input", password);
         selen.Click("/html/body/div[1]/div/div[2]/form/div[7]/button");
         selen.SelectValue("/html/body/div[1]/section/form/div[1]/select", "VENDA_ABERTO");
-        TimeSleep.Sleep(3);
+        TimeSleep.Sleep(8);
     }
 
     public void Sair() {
@@ -59,7 +59,7 @@ public class SistemaBarros {
     public void AbrirDesbloquiarVenda() {
         selen.Click("/html/body/div[1]/section/form/div[1]/div[1]/button");
         selen.Click("/html/body/div[1]/section/form/div[1]/div[1]/ul/li[11]/a");
-        TimeSleep.Sleep(3);
+        TimeSleep.Sleep(5);
 
     }
 
@@ -83,7 +83,7 @@ public class SistemaBarros {
     public void AbrirFecharVenda() {
         selen.Click("/html/body/div[1]/section/form/div[2]/div[3]/table/tbody/tr[1]/td[1]/div/div/button");
         selen.Click("/html/body/div[1]/section/form/div[2]/div[3]/table/tbody/tr[1]/td[1]/div/div/ul/li[4]/a");
-        TimeSleep.Sleep(4);
+        TimeSleep.Sleep(8);
     }
     public void ProcurarPorData(String CampoLabel){
         selen.SendKeys("/html/body/div[1]/section/form/div[1]/div[2]/div/input", CampoLabel);
@@ -98,7 +98,7 @@ public class SistemaBarros {
             dataHoje = java.sql.Date.valueOf(dataLocal);
             dataVenda = dateFormat.parse(selen.GetText("//*[@id=\"formPedidos:gridPedidos\"]/tbody/tr[1]/td[12]"));
         } catch (Exception ex) {
-            System.out.println("Erro lina 79");
+            
         }
         long dias = dataHoje.getTime() - dataVenda.getTime();
         dias = (dias / 1000 / 60 / 60 / 24);
@@ -122,12 +122,34 @@ public class SistemaBarros {
         }
         TimeSleep.Sleep(2);
         selen.Click("/html/body/div[1]/section/div[15]/div/div/div[2]/form/div/div[3]/div/div/div/div[1]/div/a[1]");
-        TimeSleep.Sleep(5);
+        TimeSleep.Sleep(7);
         selen.Click("/html/body/div[1]/section/div[15]/div/div/div[2]/form/div/div[1]/div/div/div[3]/a[2]");
         TimeSleep.Sleep(tempoOcioso);
+        if (selen.isDisplayed("/html/body/div[3]/div/div/div[2]/form/div/a")) {
+            selen.Click("/html/body/div[3]/div/div/div[2]/form/div/a");
+            TimeSleep.Sleep(1);
+            selen.Click("/html/body/div[1]/section/div[15]/div/div/div[1]/form/a");
+            TimeSleep.Sleep(3);
+            selen.Click("/html/body/div[1]/section/form/div[2]/div[3]/table/tbody/tr[1]/td[1]/div/div/button");
+            selen.Click("/html/body/div[1]/section/form/div[2]/div[3]/table/tbody/tr[1]/td[1]/div/div/ul/li[1]/a");
+            TimeSleep.Sleep(5);
+            String value = selen.GetValue("/html/body/div[1]/section/div[4]/div/div/div[2]/form/div/div[1]/div[1]/div/div[3]/div/div/div/div[1]/input");
+            selen.Clear("/html/body/div[1]/section/div[4]/div/div/div[2]/form/div/div[1]/div[1]/div/div[3]/div/div/div/div[1]/input");
+            selen.SendKeys("/html/body/div[1]/section/div[4]/div/div/div[2]/form/div/div[1]/div[1]/div/div[3]/div/div/div/div[1]/input", "Cliente sem ficha");
+            selen.Click("/html/body/div[1]/section/div[4]/div/div/div[2]/form/div/div[1]/div[1]/div/div[3]/div/div/div/div[1]/div/a");
+            TimeSleep.Sleep(8);
+            selen.Click("/html/body/div[1]/section/div[4]/div/div/div[2]/form/div/div[2]/div/div/ul/li[3]/a");
+            selen.SendKeys("/html/body/div[1]/section/div[4]/div/div/div[2]/form/div/div[2]/div/div/div/div[2]/div[2]/div[1]/textarea", value);
+            selen.Click("/html/body/div[1]/section/div[4]/div/div/div[2]/form/div/div[1]/div[3]/div[2]/div[6]/a[1]");
+            TimeSleep.Sleep(12);
+            condicao = "Venda Desbloquiada!";
+        }
 
     }
 
+    public void AlterarCliente(){
+        
+    }
     public void VoltarDias(long dias) throws AWTException {
         selen.Click("/html/body/div[1]/section/div[15]/div/div/div[2]/form/div/div[1]/div/div/div[1]/div/div[2]/div/input");
         for (int i = 0; i < dias; i++) {

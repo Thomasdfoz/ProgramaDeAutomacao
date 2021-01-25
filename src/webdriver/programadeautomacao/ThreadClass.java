@@ -28,6 +28,9 @@ public class ThreadClass implements Runnable {
         this.username = username;
         this.password = password;
     }
+    public void Stop(){
+        Thread.currentThread().interrupt();
+    }
 
     @Override
     public void run() {
@@ -46,6 +49,7 @@ public class ThreadClass implements Runnable {
             }
             classMain.AddText(barros.msg);
         }
+        
         for (int i = 1; i <= classMain.repete; i++) {
             try {
                 barros.AbrirFecharVenda();
@@ -65,6 +69,6 @@ public class ThreadClass implements Runnable {
             }
         }
         barros.Sair();
-        classMain.StopThread();
+        Stop();
     }
 }

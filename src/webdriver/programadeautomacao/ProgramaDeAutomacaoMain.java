@@ -50,6 +50,9 @@ public class ProgramaDeAutomacaoMain extends javax.swing.JFrame {
      */
     public ProgramaDeAutomacaoMain() {
         initComponents();
+        thread = new ThreadClass(tempoOcioso, url, username, password, classMain);
+        System.setProperty("webdriver.chrome.driver", "C:\\Programa de Automação\\lib\\chromedriver_win32\\chromedriver.exe");
+        
 
     }
 
@@ -277,13 +280,12 @@ public class ProgramaDeAutomacaoMain extends javax.swing.JFrame {
         campoF = CampoField;
         //AtivaDesativaComponentes(false);
         TextPanel.setText("");
-        System.setProperty("webdriver.chrome.driver", "D:\\Usuarios\\Thomas\\Documents\\Libs\\chromedriver_win32\\chromedriver.exe");
         RepInfLabel.setText(Integer.toString(repete));
-        thread = new ThreadClass(tempoOcioso, url, username, password, classMain);
         threadClass = new Thread(thread);
         threadClass.start();
         AtualizarLabel("0");
         AtivaDesativaComponentes(false);
+        
         
         
 
@@ -297,7 +299,9 @@ public class ProgramaDeAutomacaoMain extends javax.swing.JFrame {
 
     public void StopThread(){
         AtivaDesativaComponentes(true);
-        threadClass.stop();
+        thread.Stop();
+        threadClass.interrupt();
+        
     }
     public void AtivaDesativaComponentes(boolean value) {
         TempSpinner.setEnabled(value);
