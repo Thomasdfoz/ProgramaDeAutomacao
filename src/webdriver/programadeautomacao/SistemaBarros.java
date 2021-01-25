@@ -19,9 +19,9 @@ import webdriver.programadeautomacao.ProgramaDeAutomacaoMain;
 public class SistemaBarros {
     
     public int tempoOcioso;
-    private String url; //= "https://170.84.17.234:8443/progatWeb/sistema/comercial/ven/pedido/pedido.jsf";
-    private String username; //= new String("thiago@barros.com.br");
-    private String password;// = new String("123456");
+    private String url; 
+    private String username;
+    private String password;
     private Selenium selen = new Selenium();
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private LocalDate dataLocal = LocalDate.now();
