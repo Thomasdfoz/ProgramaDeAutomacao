@@ -35,9 +35,9 @@ public class ProgramaDeAutomacaoMain extends javax.swing.JFrame {
 
     private int tempoOcioso;
     public boolean desbloquiar;
-    private String url = "https://170.84.17.234:8443/progatWeb/sistema/comercial/ven/pedido/pedido.jsf";
-    private String username = new String("thiago@barros.com.br");
-    private String password = new String("123456");
+    private String url; 
+    private String username;
+    private String password;
     public int repete;
     private ThreadClass thread;
     private Thread threadClass;
